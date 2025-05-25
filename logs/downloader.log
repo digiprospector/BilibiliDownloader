@@ -1,0 +1,55 @@
+2025-05-25 15:54:01 [INFO] Bilibili下载器启动
+2025-05-25 15:57:57 [INFO] Bilibili下载器启动
+2025-05-25 15:58:05 [INFO] 开始处理:https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 15:58:13 [INFO] https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:01:40 [INFO] Bilibili下载器启动
+2025-05-25 16:01:51 [INFO] 开始处理:https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:01:55 [INFO] https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:03:51 [INFO] Bilibili下载器启动
+2025-05-25 16:04:00 [INFO] 开始处理:https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:04:05 [INFO] https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:06:20 [INFO] Bilibili下载器启动
+2025-05-25 16:06:28 [INFO] 开始处理:https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:06:30 [INFO] https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:06:30 [INFO] 开始处理:https://www.bilibili.com/video/BV1kr4y1F73U?spm_id_from=333.788.videopod.sections&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:06:30 [CRITICAL] Bilibili下载器:第 2 个任务出错:'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\PythoProject\bilibili\src\main.py", line 285, in main
+    self._process_download(link_info)
+  File "D:\PythoProject\bilibili\src\main.py", line 236, in _process_download
+    self.download_audio(bv_json, bv_id, file_download_path)
+  File "D:\PythoProject\bilibili\src\main.py", line 185, in download_audio
+    audio_info = self._get_media_info("audio", bv_json)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PythoProject\bilibili\src\main.py", line 99, in _get_media_info
+    flac_data = bv_json.get("data", {}).get("dash", {}).get("flac", {}).get("audio", {})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+2025-05-25 16:06:30 [INFO] 开始处理:https://www.bilibili.com/video/BV1Bp4y1V79u/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:06:31 [CRITICAL] Bilibili下载器:第 3 个任务出错:'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\PythoProject\bilibili\src\main.py", line 285, in main
+    self._process_download(link_info)
+  File "D:\PythoProject\bilibili\src\main.py", line 236, in _process_download
+    self.download_audio(bv_json, bv_id, file_download_path)
+  File "D:\PythoProject\bilibili\src\main.py", line 185, in download_audio
+    audio_info = self._get_media_info("audio", bv_json)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PythoProject\bilibili\src\main.py", line 99, in _get_media_info
+    flac_data = bv_json.get("data", {}).get("dash", {}).get("flac", {}).get("audio", {})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+2025-05-25 16:09:15 [INFO] Bilibili下载器启动
+2025-05-25 16:09:24 [INFO] 开始处理:https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:09:30 [INFO] https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:09:30 [INFO] 开始处理:https://www.bilibili.com/video/BV1kr4y1F73U?spm_id_from=333.788.videopod.sections&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:09:34 [INFO] https://www.bilibili.com/video/BV1kr4y1F73U?spm_id_from=333.788.videopod.sections&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:09:34 [INFO] 开始处理:https://www.bilibili.com/video/BV1Bp4y1V79u/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:09:35 [INFO] https://www.bilibili.com/video/BV1Bp4y1V79u/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:11:26 [INFO] Bilibili下载器启动
+2025-05-25 16:11:34 [INFO] 开始处理:https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:11:36 [INFO] https://www.bilibili.com/video/BV1Hd4y167vr?spm_id_from=333.788.player.switch&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:11:36 [INFO] 开始处理:https://www.bilibili.com/video/BV1kr4y1F73U?spm_id_from=333.788.videopod.sections&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:11:37 [INFO] https://www.bilibili.com/video/BV1kr4y1F73U?spm_id_from=333.788.videopod.sections&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
+2025-05-25 16:11:37 [INFO] 开始处理:https://www.bilibili.com/video/BV1Bp4y1V79u/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91
+2025-05-25 16:11:39 [INFO] https://www.bilibili.com/video/BV1Bp4y1V79u/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 处理完成
