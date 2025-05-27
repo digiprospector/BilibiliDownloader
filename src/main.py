@@ -111,8 +111,7 @@ class BilibiliDownloader:
                 # 如果没有 FLAC，回退到普通音频
                 audio_list = bv_json.get("data", {}).get("dash", {}).get("audio", [])
             if not audio_list:
-                return None
-
+                audio_list = bv_json.get("data", {}).get("dash", {}).get("audio", [])
             max_audio = audio_list[find_highest_quality_file_index(audio_list)]
             codecs = max_audio.get('codecs', "")
             return {

@@ -39,8 +39,8 @@ class NetworkFetcher(NetworkFetch):
 
 
     def _request_bv_info(self,cookies,headers,params,url):
-        self.session.headers.update(headers)
-        self.session.cookies.update(cookies)
+        # self.session.headers.update(headers)
+        # self.session.cookies.update(cookies)
         response = self.session.get(url,params=params)
         if response.status_code == 200:
             bv_info={
