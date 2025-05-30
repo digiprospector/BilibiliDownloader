@@ -2,11 +2,9 @@ import logging
 import os
 import sys
 from urllib.parse import urljoin
-import requests
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 from src.utils.utils import  generate_qrcode, qrcode_to_pixmap, create_window
 from src.implementations.data_loader import DataLoader
 from src.implementations.network_fetcher import NetworkFetcher
