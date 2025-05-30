@@ -13,11 +13,14 @@ BilibiliDownloader 是一款基于 Python 开发的 B 站（哔哩哔哩）视�
 
 🛠 使用方法
 准备视频链接：将您想要下载的 B 站视频链接复制到项目目录下的 src/data/urls.txt 文件中，每个链接占一行。
+如有python环境,可启动在src目录下的main.py即可。
 
 选择下载模式：
 音视频一起下载：在命令行中输入命令并添加 -V 参数，例如 https://www.bilibili.com/video/BV1JK4y1u7KH/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 -V，即可开始下载音视频。
 仅下载音频：在命令行中输入命令并添加 -A 参数，例如 https://www.bilibili.com/video/BV1JK4y1u7KH/?spm_id_from=333.337.search-card.all.click&vd_source=6d80d6e232cdb4c4c62b6815bec86d91 -A，即可仅下载音频内容。
 默认下载模式：若不添加任何命令参数，则默认下载音视频。
+
+
 
 💡 当前版本信息
 当前版本为 20250525
