@@ -276,7 +276,7 @@ class BilibiliDownloader:
             audio_complete = self.audio_info.get("complete", False)
             video_complete = self.video_info.get("complete", False)
             if audio_complete and video_complete:
-                output_path = os.path.join(file_download_path, f"{bv_title}{get_file_format(self.video_info['filepath'])}")
+                output_path = os.path.join(file_download_path, f"[{bv_id}].{bv_title}{get_file_format(self.video_info['filepath'])}")
                 if os.path.exists(output_path):
                     self.logging.warning(f"输出文件已存在，将删除: {output_path}")
                     try:
@@ -299,7 +299,7 @@ class BilibiliDownloader:
                 file_format=file_format.get("audio_codec",".m4a")
                 if file_format=="aac":
                     file_format="m4a"
-                new_path = os.path.join(file_download_path, f"{bv_title}.{file_format}")
+                new_path = os.path.join(file_download_path, f"[{bv_id}].{bv_title}.{file_format}")
                 os.rename(old_path, new_path)
         except Exception as e:
             self.logging.info(f"处理下载文件{bv_id}时出错: {str(e)}", exc_info=True)
@@ -323,6 +323,7 @@ class BilibiliDownloader:
         parser.add_argument("-a", "--audio", action="store_true", help="Download audio only.")
         # -v is default if url is provided and -a is not, so it's more for explicit declaration
         parser.add_argument("-v", "--video", action="store_true", help="Download video (and audio if available, then merge). This is the default if a URL is provided without -a.")
+        parser.add_argument("-p", "--path", help="Specify the download directory, overriding the config file setting.")
 
         args = parser.parse_args()
 
@@ -345,6 +346,15 @@ class BilibiliDownloader:
                 download_links = self.loader.loader("download_link_path",download_link_path=self.config['download_link_path'])
             except Exception as e:
                 self.logging.error(f"读取下载链接文件出错: {e}")
+                sys.exit(1)
+
+        # 如果通过命令行指定了下载路径，则覆盖配置中的路径
+        if args.path:
+            if os.path.isdir(args.path):
+                self.config["file_download_path"] = os.path.abspath(args.path)
+                self.logging.info(f"下载目录已通过命令行设置为: {self.config['file_download_path']}")
+            else:
+                self.logging.error(f"通过 -p/--path 指定的下载目录无效或不存在: {args.path}")
                 sys.exit(1)
         for index, link_info in enumerate(download_links, 1):
             try:
