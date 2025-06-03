@@ -1,0 +1,6 @@
+download/*
+ffmpeg.exe
+ffprobe.exe
+src/**/__pycache__
+logs/*
+src/data/cookies.json

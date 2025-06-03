@@ -1,6 +1,10 @@
 import logging
 import os
 import sys
+import sys
+import json
+import argparse # Import argparse
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from urllib.parse import urljoin
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMessageBox
@@ -88,6 +92,34 @@ class BilibiliDownloader:
             timer.stop()
             QMessageBox.information(window, "登录成功", "您已成功登录!")
             window.close()
+            self._save_cookies()
+
+    def _save_cookies(self):
+        """保存当前会话的cookies到文件"""
+        cookies = self.fetcher.session.cookies.get_dict()
+        if cookies:
+            try:
+                cookie_fn = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'data', 'cookies.json'))
+                with open(cookie_fn, "w") as f:
+                    json.dump(cookies, f)
+                self.logging.info("Cookies 已保存到 cookies.json")
+            except Exception as e:
+                self.logging.error(f"保存cookies时出错: {e}")
+
+    def _load_cookies(self):
+        ret = {}
+        """从文件加载cookies到当前会话"""
+        cookie_fn = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'data', 'cookies.json'))
+        if os.path.exists(cookie_fn):
+            try:
+                with open(cookie_fn, "r") as f:
+                    ret = json.load(f)
+            except json.JSONDecodeError as e:
+                self.logging.error(f"加载 cookies.json 时发生 JSON 解码错误: {e}")
+            except Exception as e:
+                self.logging.error(f"加载 cookies 时出错: {e}")
+            finally:
+                return ret
 
     @staticmethod
     def _get_media_info(media_type, bv_json):
@@ -277,8 +309,43 @@ class BilibiliDownloader:
         self._initialize_config()
         self.logging.info("Bilibili下载器启动")
         if not self.config.get("cookies", ""):
-            self._login_get_cookies()
-        download_links = self.loader.loader("download_link_path",download_link_path=self.config['download_link_path'])
+            self.fetcher.session.headers.update(self.config["headers"])
+            cookies = self._load_cookies()
+            if cookies:
+                self.config["cookies"] = cookies
+                self.exit_code = 0
+            else:
+                self._login_get_cookies()
+
+        # 使用 argparse 解析命令行参数
+        parser = argparse.ArgumentParser(description="Bilibili Downloader")
+        parser.add_argument("url", nargs="?", help="The Bilibili video URL to download.")
+        parser.add_argument("-a", "--audio", action="store_true", help="Download audio only.")
+        # -v is default if url is provided and -a is not, so it's more for explicit declaration
+        parser.add_argument("-v", "--video", action="store_true", help="Download video (and audio if available, then merge). This is the default if a URL is provided without -a.")
+
+        args = parser.parse_args()
+
+        if args.url:
+            if args.audio and args.video:
+                self.logging.error("不能同时指定 -a (仅音频) 和 -v (视频)。请选择一个。")
+                sys.exit(1)
+            elif args.audio:
+                download_links = [{"link": args.url, "download_info": "-a"}]  # 下载音频
+            elif args.video: # Explicitly -v or just URL
+                download_links = [{"link": args.url, "download_info": "-v"}]  # 下载视频
+            else: # Only URL provided, default to video
+                download_links = [{"link": args.url, "download_info": "-v"}]  # 下载视频
+        else: # No URL provided via command line
+            if args.audio or args.video:
+                self.logging.error("当未提供 URL 时，不能使用 -a 或 -v 参数。")
+                sys.exit(1)
+            # 从文件读取
+            try:
+                download_links = self.loader.loader("download_link_path",download_link_path=self.config['download_link_path'])
+            except Exception as e:
+                self.logging.error(f"读取下载链接文件出错: {e}")
+                sys.exit(1)
         for index, link_info in enumerate(download_links, 1):
             try:
                 self.logging.info(f"开始处理:{link_info.get("link","")}")

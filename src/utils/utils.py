@@ -140,8 +140,18 @@ def get_media_info(filepath: str):
     if not Path(filepath).exists():
         print(f"[错误] 文件不存在: {filepath}")
         return None
+    ffprobe_executable = 'ffprobe'  # Default command
+
+    if os.name == 'nt':
+        project_root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        ffprobe_path_in_root = os.path.join(project_root_dir, 'ffprobe.exe')
+        if os.path.exists(ffprobe_path_in_root):
+            ffprobe_executable = ffprobe_path_in_root
+        else:
+            print(f"警告: 未在项目根目录 ({project_root_dir}) 找到 ffprobe.exe。将尝试使用系统 PATH 中的 ffprobe。")
+
     cmd = [
-        "ffprobe",
+        ffprobe_executable,
         "-v", "error",
         "-show_entries",
         "format=format_name:stream=codec_type,codec_name",
@@ -192,8 +202,18 @@ def delete_file(file_path):
         return False
 
 def merge_audio_video(video_path, audio_path, output_path):
+    ffmpeg_executable = 'ffmpeg'  # Default command
+
+    if os.name == 'nt':
+        project_root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        ffmpeg_path_in_root = os.path.join(project_root_dir, 'ffmpeg.exe')
+        if os.path.exists(ffmpeg_path_in_root):
+            ffmpeg_executable = ffmpeg_path_in_root
+        else:
+            print(f"警告: 未在项目根目录 ({project_root_dir}) 找到 ffmpeg.exe。将尝试使用系统 PATH 中的 ffmpeg。")
+
     command = [
-        'ffmpeg',
+        ffmpeg_executable,
         '-i', video_path,
         '-i', audio_path,
         '-c:v', 'copy',
