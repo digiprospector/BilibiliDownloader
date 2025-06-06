@@ -20,6 +20,7 @@ from src.utils.utils import (
     check_file_integrity, find_highest_quality_file_index,
     merge_audio_video, get_file_format, delete_file, get_media_info, generate_random_cookie
 )
+from datetime import datetime # Import datetime
 
 class BilibiliDownloader:
     def __init__(self):
@@ -258,6 +259,9 @@ class BilibiliDownloader:
             return
         bv_json = bv_content.get("data", {})
         bv_title = bv_content.get("title", f"bilibili_{bv_id}")
+        bv_owner = bv_content.get("owner", "")
+        epoch_time = bv_content.get("datetime", 0)
+        bv_datetime_str = datetime.fromtimestamp(epoch_time).strftime('%Y-%m-%d_%H-%M-%S')
         # 下载请求的媒体
         file_download_path = self.config["file_download_path"]
         #v是video
@@ -268,15 +272,15 @@ class BilibiliDownloader:
             self.download_audio(bv_json, bv_id, file_download_path)
 
         # 处理下载的文件
-        self._process_downloaded_files(bv_title, file_download_path,bv_id)
+        self._process_downloaded_files(bv_title, bv_owner, bv_datetime_str, file_download_path,bv_id)
 
-    def _process_downloaded_files(self, bv_title, file_download_path,bv_id):
+    def _process_downloaded_files(self, bv_title, bv_owner, bv_datetime_str, file_download_path,bv_id):
         """合并或重命名下载的文件"""
         try:
             audio_complete = self.audio_info.get("complete", False)
             video_complete = self.video_info.get("complete", False)
             if audio_complete and video_complete:
-                output_path = os.path.join(file_download_path, f"[{bv_id}].{bv_title}{get_file_format(self.video_info['filepath'])}")
+                output_path = os.path.join(file_download_path, f"[{bv_owner}][{bv_datetime_str}][{bv_id}].{bv_title}{get_file_format(self.video_info['filepath'])}")
                 if os.path.exists(output_path):
                     self.logging.warning(f"输出文件已存在，将删除: {output_path}")
                     try:
@@ -299,7 +303,7 @@ class BilibiliDownloader:
                 file_format=file_format.get("audio_codec",".m4a")
                 if file_format=="aac":
                     file_format="m4a"
-                new_path = os.path.join(file_download_path, f"[{bv_id}].{bv_title}.{file_format}")
+                new_path = os.path.join(file_download_path, f"[{bv_owner}][{bv_datetime_str}][{bv_id}].{bv_title}.{file_format}")
                 os.rename(old_path, new_path)
         except Exception as e:
             self.logging.info(f"处理下载文件{bv_id}时出错: {str(e)}", exc_info=True)
@@ -336,7 +340,7 @@ class BilibiliDownloader:
             elif args.video: # Explicitly -v or just URL
                 download_links = [{"link": args.url, "download_info": "-v"}]  # 下载视频
             else: # Only URL provided, default to video
-                download_links = [{"link": args.url, "download_info": "-v"}]  # 下载视频
+                download_links = [{"link": args.url, "download_info": ""}]  # 下载音视频
         else: # No URL provided via command line
             if args.audio or args.video:
                 self.logging.error("当未提供 URL 时，不能使用 -a 或 -v 参数。")

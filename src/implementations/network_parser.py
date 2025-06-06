@@ -37,5 +37,15 @@ class NetworkParser(DataParse):
                     json_str = match.group(1)
                     if len(json_str) > 8000:
                         data = json.loads(json_str)
-        return {"title":title,"data":data}
+            if script_text and 'window.__INITIAL_STATE__' in script_text:
+                match = re.search(
+                    r'window\.__INITIAL_STATE__\s*=\s*({.*?})(?:\s*;|\s*$)',
+                    script_text,
+                    re.DOTALL
+                )
+                if match:
+                    json_str = match.group(1)
+                    if len(json_str) > 8000:
+                        data1 = json.loads(json_str)                
+        return {"title":title,"data":data,"owner":data1.get('videoData').get('owner').get('name'),"datetime":data1.get('videoData').get('ctime')}
 
